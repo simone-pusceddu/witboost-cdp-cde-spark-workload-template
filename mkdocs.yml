@@ -1,0 +1,10 @@
+site_name: "Spark workload"
+site_description: "Documentation for Spark Workload template"
+
+nav:
+  - HowTo: index.md
+
+
+plugins:
+  - techdocs-core
+

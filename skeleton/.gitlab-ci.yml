@@ -1,0 +1,24 @@
+image: registry.gitlab.com/agilefactory/witboost.mesh/provisioning/cdp/cicd/scala-sbt
+
+stages:
+  - build
+  - deploy
+
+build: 
+  stage: build
+  script:
+    - cd spark-app && sbt assembly
+  artifacts:
+    paths: 
+      - spark-app/target/scala-2.11/*.jar
+
+deploy:
+  stage: deploy
+  script:
+    - aws configure set aws_access_key_id ${AWS_ACCESS_KEY} --profile default
+    - aws configure set aws_secret_access_key ${AWS_SECRET_KEY} --profile default
+    - aws configure set region eu-west-1 --profile default
+    - aws s3 cp spark-app/target/scala-2.11/*.jar s3://${{ values.bucket }}/${{ values.domain.split(':')[1] }}/${{ values.dataproduct.split(':')[1] }}/${{ values.identifier.split(".")[3] }}/0.0.0/
+  only:
+    refs:
+      - main
