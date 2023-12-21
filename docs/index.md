@@ -71,8 +71,9 @@ Learn more about it on the [official Spark documentation](https://spark.apache.o
 
 
 ### Spark job scheduling
+
 Spark jobs can optionally be scheduled so that they are automatically run on an interval.
-- 
+
 - **Cron expression:** [Optional] A cron expression that is directly provided to the scheduler. This field allows for detailed time-based scheduling, specifying when and how often the job should be executed. If not provided, the job will not be automatically executed based on a time-based schedule.
 - **Start Date:** [Optional] The date and time when a scheduled Spark job should begin its execution. If not provided, the job can start immediately upon scheduling.
 - **End Date:** [Optional] The date and time when a scheduled Spark job should stop its execution. If not provided, the job may continue running indefinitely according to the schedule.

@@ -34,7 +34,7 @@ spec:
     tags: []
     readsFrom: {% if values.readsFrom | length > 0 %}{% for i in values.readsFrom %}
       - ${{ i }}{% endfor %}{% else %}[]{% endif %}
-    specific: 
+    specific:
       cdeService: ${{ values.service }}
       cdeCluster: ${{ values.cluster }}
       jobName: ${{ values.jobName }}
@@ -51,6 +51,12 @@ spec:
         logLevel: INFO
         conf: {}
         schedule:
-          cronExpression: ${{ values.cronExpression | dump }}
-          startDate: ${{ values.startDate }}
-          endDate: ${{ values.endDate }}
+          {% if values.enableScheduling %}
+            cronExpression: ${{ values.cronExpression }}
+            startDate: ${{ values.startDate }}
+            endDate: ${{ values.endDate }}
+          {% else %}
+            null
+          {% endif %}
+
+

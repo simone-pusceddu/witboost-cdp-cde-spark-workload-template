@@ -65,7 +65,7 @@ spec:
         identifier:
           title: Identifier
           type: string
-          description: A unique identifier for the entity inside the domain. It will not be editable aftrer creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          description: A unique identifier for the entity inside the domain. It will not be editable after creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
           ui:field: ComponentIdentifierPicker
           ui:options:
             allowArbitraryValues: false
@@ -149,20 +149,36 @@ spec:
 
     - title: Spark job scheduling
       properties:
-        cronExpression: 
-          title: Cron expression
-          type: string
-          description: Cron expression
-        startDate: 
-          title: Start Date
-          type: string
-          "format": "date-time"
-          description: Start Date matching the pattern 'yyyy-MM-ddTHH:mm:ssZ'
-        endDate: 
-          title: End Date
-          type: string
-          "format": "date-time"
-          description: End Date matching the pattern 'yyyy-MM-ddTHH:mm:ssZ'
+        enableScheduling:
+          type: boolean
+          title: "Enable scheduling"
+          default: false
+      allOf:
+        - if:
+            properties:
+              enableScheduling:
+                const: true
+          then:
+            properties:
+              cronExpression:
+                title: Cron expression
+                type: string
+                description: "Cron expression (format: Min Hour DayOfMonth Month DayOfWeek)"
+              startDate:
+                title: Start Date
+                type: string
+                "format": "date-time"
+              endDate:
+                title: End Date
+                type: string
+                "format": "date-time"
+            required:
+              - "cronExpression"
+              - "startDate"
+              - "endDate"
+          else:
+            properties:
+              {}
 
   steps:
     - id: template
@@ -185,11 +201,12 @@ spec:
           cluster: '${{ parameters.cluster }}'
           bucket: '${{ parameters.bucket }}'
           jobName: '${{ parameters.jobName }}'
-          driverCores: ${{ parameters.driverCores }}
+          driverCores: '${{ parameters.driverCores }}'
           driverMemory: '${{ parameters.driverMemory }}'
-          executorCores: ${{ parameters.executorCores }}
+          executorCores: '${{ parameters.executorCores }}'
           executorMemory: '${{ parameters.executorMemory }}'
-          numExecutors: ${{ parameters.numExecutors }}
+          numExecutors: '${{ parameters.numExecutors }}'
+          enableScheduling: '${{ parameters.enableScheduling }}'
           cronExpression: '${{ parameters.cronExpression }}'
           startDate: '${{ parameters.startDate | truncate(19, true, "Z") }}'
           endDate: '${{ parameters.endDate | truncate(19, true, "Z") }}'
@@ -200,6 +217,8 @@ spec:
           displayName: '${{ parameters.displayName }}'
           owner: 'AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}'
           repo: '${{ parameters.name.split(" ") | join("") | lower }}'
+
+
 
     - id: publish
       name: Publish
