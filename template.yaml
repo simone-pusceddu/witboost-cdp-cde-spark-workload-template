@@ -14,9 +14,9 @@ metadata:
     - spark
     - workload
 spec:
+  generates: componenttype:default/workload
   owner: agilelab
   type: workload
-
   parameters:
     - title: Component basic information
       required:
@@ -48,7 +48,7 @@ spec:
           ui:field: EntityPicker
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - Domain
         dataproduct:
           title: Data Product
@@ -60,12 +60,15 @@ spec:
               entityPath: spec.domain
           ui:options:
             allowArbitraryValues: false
-            allowedKinds: 
+            allowedKinds:
               - System
         identifier:
           title: Identifier
           type: string
-          description: A unique identifier for the entity inside the domain. It will not be editable after creation and is expected to be a string that is sequences of [a-zA-Z] separated by any of [-_]. An example could be 'finance-customer'
+          description: A unique identifier for the entity inside the domain. It will not
+            be editable after creation and is expected to be a string that is
+            sequences of [a-zA-Z] separated by any of [-_]. An example could be
+            'finance-customer'
           ui:field: ComponentIdentifierPicker
           ui:options:
             allowArbitraryValues: false
@@ -96,8 +99,8 @@ spec:
           items:
             type: string
             ui:field: ReadsFromPicker
-          description: This is filled only for DataPipeline workloads and it represents the list of output ports or external systems that is reading
-
+          description: This is filled only for DataPipeline workloads and it represents
+            the list of output ports or external systems that is reading
     - title: Spark infrastructure details
       required:
         - service
@@ -105,7 +108,7 @@ spec:
         - bucket
         - jobName
       properties:
-        service: 
+        service:
           title: CDE Service
           type: string
           description: Name of the CDE Service
@@ -113,45 +116,47 @@ spec:
           title: CDE Virtual Cluster
           type: string
           description: Name of the CDE Virtual Cluster
-        bucket: 
+        bucket:
           title: Artifact bucket
           type: string
           description: S3 Bucket name where spark artifacts will be stored
-        jobName: 
+        jobName:
           title: Job name
           type: string
-          description: Spark job name must be formatted as $DpDomain-$DpName-$DpMajorVersion-$WorkloadName-$Environment and must contains only characters in the range [a-zA-Z0-9-_]. Any not allowed characters in $DpDomain, $DpName, $DpMajorVersion or $Environment must be substituted with \"-\"
-
-        
-
+          description: Spark job name must be formatted as
+            $DpDomain-$DpName-$DpMajorVersion-$WorkloadName-$Environment and
+            must contains only characters in the range [a-zA-Z0-9-_]. Any not
+            allowed characters in $DpDomain, $DpName, $DpMajorVersion or
+            $Environment must be substituted with \"-\"
     - title: Spark job details
       properties:
-        driverCores: 
+        driverCores:
           title: Driver Cores
           type: integer
           description: Number of Driver Cores (If specified must be a positive integer)
-        driverMemory: 
+        driverMemory:
           title: Driver Memory
           type: string
-          description: Driver Memory (If specified must be a positive integer followed by 'g' e.g. 2g)
-        executorCores: 
+          description: Driver Memory (If specified must be a positive integer followed by
+            'g' e.g. 2g)
+        executorCores:
           title: Executor Cores
           type: integer
           description: Number of Executor Cores (If specified must be a positive integer)
-        executorMemory: 
+        executorMemory:
           title: Executor Memory
           type: string
-          description: Executor Memory (If specified must be a positive integer followed by 'g' e.g. 2g)
-        numExecutors: 
+          description: Executor Memory (If specified must be a positive integer followed
+            by 'g' e.g. 2g)
+        numExecutors:
           title: Number of executors
           type: integer
           description: Number of executors (If specified must be a positive integer)
-
     - title: Spark job scheduling
       properties:
         enableScheduling:
           type: boolean
-          title: "Enable scheduling"
+          title: Enable scheduling
           default: false
       allOf:
         - if:
@@ -167,80 +172,82 @@ spec:
               startDate:
                 title: Start Date
                 type: string
-                "format": "date-time"
+                format: date-time
               endDate:
                 title: End Date
                 type: string
-                "format": "date-time"
+                format: date-time
             required:
-              - "cronExpression"
-              - "startDate"
-              - "endDate"
+              - cronExpression
+              - startDate
+              - endDate
           else:
-            properties:
-              {}
-
+            properties: {}
   steps:
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
-        targetPath: '${{ parameters.rootDirectory }}'
+        targetPath: ${{ parameters.rootDirectory }}
         values:
-          name: '${{ parameters.name }}'
-          fullyQualifiedName: '${{ parameters.fullyQualifiedName }}'
-          description: '${{ parameters.description }}'
-          domain: '${{ parameters.domain }}'
-          dataproduct: '${{ parameters.dataproduct }}'
-          identifier: '${{ parameters.identifier }}'
-          developmentGroup: '${{ parameters.developmentGroup }}'
-          dependsOn: '${{ parameters.dependsOn }}'
-          readsFrom: '${{ parameters.readsFrom }}'
-          service: '${{ parameters.service }}'
-          cluster: '${{ parameters.cluster }}'
-          bucket: '${{ parameters.bucket }}'
-          jobName: '${{ parameters.jobName }}'
-          driverCores: '${{ parameters.driverCores }}'
-          driverMemory: '${{ parameters.driverMemory }}'
-          executorCores: '${{ parameters.executorCores }}'
-          executorMemory: '${{ parameters.executorMemory }}'
-          numExecutors: '${{ parameters.numExecutors }}'
-          enableScheduling: '${{ parameters.enableScheduling }}'
-          cronExpression: '${{ parameters.cronExpression }}'
-          startDate: '${{ parameters.startDate | truncate(19, true, "Z") }}'
-          endDate: '${{ parameters.endDate | truncate(19, true, "Z") }}'
+          name: ${{ parameters.name }}
+          fullyQualifiedName: ${{ parameters.fullyQualifiedName }}
+          description: ${{ parameters.description }}
+          domain: ${{ parameters.domain }}
+          dataproduct: ${{ parameters.dataproduct }}
+          identifier: ${{ parameters.identifier }}
+          developmentGroup: ${{ parameters.developmentGroup }}
+          dependsOn: ${{ parameters.dependsOn }}
+          readsFrom: ${{ parameters.readsFrom }}
+          service: ${{ parameters.service }}
+          cluster: ${{ parameters.cluster }}
+          bucket: ${{ parameters.bucket }}
+          jobName: ${{ parameters.jobName }}
+          driverCores: ${{ parameters.driverCores }}
+          driverMemory: ${{ parameters.driverMemory }}
+          executorCores: ${{ parameters.executorCores }}
+          executorMemory: ${{ parameters.executorMemory }}
+          numExecutors: ${{ parameters.numExecutors }}
+          enableScheduling: ${{ parameters.enableScheduling }}
+          cronExpression: ${{ parameters.cronExpression }}
+          startDate: ${{ parameters.startDate | truncate(19, true, "Z") }}
+          endDate: ${{ parameters.endDate | truncate(19, true, "Z") }}
           useCaseTemplateId: urn:dmb:utm:spark-workload-template:0.0.0
           infrastructureTemplateId: urn:dmb:itm:cdp-aws-workload-spark-provisioner:0
           useCaseTemplateVersion: 0.0.0
-          destination: &destination 'gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}&repo=${{ parameters.name.split(" ") | join("") | lower }}'
-          displayName: '${{ parameters.displayName }}'
-          owner: 'AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain | replace(r/domain:| |-/, "") }}%2F${{ parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}'
-          repo: '${{ parameters.name.split(" ") | join("") | lower }}'
-
-
-
+          destination: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+            parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+            parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+            }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+          displayName: ${{ parameters.displayName }}
+          owner: AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{ parameters.domain
+            | replace(r/domain:| |-/, "") }}%2F${{
+            parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "") }}
+          repo: ${{ parameters.name.split(" ") | join("") | lower }}
     - id: publish
       name: Publish
       action: witboostMeshComponent:publish:gitlab
       input:
-        allowedHosts: ['gitlab.com']
-        description: 'This is ${{ parameters.name }}'
-        repoUrl: *destination
-        rootDirectory: '${{ parameters.rootDirectory }}'
-        dataproduct: '${{ parameters.dataproduct }}'
-
+        allowedHosts:
+          - gitlab.com
+        description: This is ${{ parameters.name }}
+        repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
+          parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
+          parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
+          }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+        rootDirectory: ${{ parameters.rootDirectory }}
+        dataproduct: ${{ parameters.dataproduct }}
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: '${{ steps.publish.output.repoContentsUrl }}'
-        catalogInfoPath: '/catalog-info.yaml'
-
+        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
+        catalogInfoPath: /catalog-info.yaml
   output:
     links:
       - title: Repository
-        url: '${{ steps.publish.output.remoteUrl }}'
+        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
-        entityRef: '${{ steps.register.output.entityRef }}'
+        entityRef: ${{ steps.register.output.entityRef }}
