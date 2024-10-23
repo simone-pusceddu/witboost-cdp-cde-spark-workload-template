@@ -1,16 +1,18 @@
+{% set dataProductMajorVersion = values.identifier.split(".")[2] %}
+
 ## Component Information
 
-| Field name               | Example value                    |
-|:-------------------------|:---------------------------------|
-| **Name**                 | ${{ values.name }}               |
-| **Fully Qualified Name** | ${{ values.fullyQualifiedName }} |
-| **Description**          | ${{ values.description }}        |
-| **Domain**               | ${{ values.domain }}             |
-| **Data Product**         | ${{ values.dataproduct }}        |
-| **Identifier**           | ${{ values.identifier }}         |
-| **Development Group**    | ${{ values.developmentGroup }}   |
-| **Depends On**           | ${{ values.dependsOn }}          |
-| *Reads From*             | ${{ values.readsFrom }}          |
+| Field name               | Example value                                                                                                           |
+|:-------------------------|:------------------------------------------------------------------------------------------------------------------------|
+| **Name**                 | ${{ values.name }}                                                                                                      |
+| **Fully Qualified Name** | ${{ values.domainName }} - ${{ values.dataproductName }} - version ${{ dataProductMajorVersion }} - ${{ values.name }}  |
+| **Description**          | ${{ values.description }}                                                                                               |
+| **Domain**               | ${{ values.domain }}                                                                                                    |
+| **Data Product**         | ${{ values.dataproduct }}                                                                                               |
+| **Identifier**           | ${{ values.identifier }}                                                                                                |
+| **Development Group**    | ${{ values.developmentGroup }}                                                                                          |
+| **Depends On**           | ${{ values.dependsOn }}                                                                                                 |
+| *Reads From*             | ${{ values.readsFrom }}                                                                                                 |
 
 
 ## Spark infrastructure details
