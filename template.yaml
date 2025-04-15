@@ -1,8 +1,8 @@
 apiVersion: scaffolder.backstage.io/v1beta3
 kind: Template
 metadata:
-  name: cdp-aws-workload-spark-template.1
-  title: Workload CDP Spark Template
+  name: cdp-aws-workload-spark-template-skeleton
+  title: Workload CDP Spark Template (Skeleton)
   description: Create a repository containing the definition of a CDP Spark Workload
   mesh:
     icon: https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Apache_Spark_logo.svg/1200px-Apache_Spark_logo.svg.png
@@ -245,10 +245,7 @@ spec:
         allowedHosts:
           - gitlab.com
         description: This is ${{ parameters.name }}
-        repoUrl: gitlab.com?owner=AgileDMBSandbox%2F${{orgname}}%2Fmesh.repository%2F${{
-          parameters.domain | replace(r/domain:| |-/, "") }}%2F${{
-          parameters.dataproduct.split(".")[1] | replace(r/ |-/g, "")
-          }}&repo=${{ parameters.name.split(" ") | join("") | lower }}
+        repoUrl: gitlab.com?owner=simone.pusceddu&repo=${{ parameters.name.split(" ") | join("") | lower }}
         rootDirectory: ${{ parameters.rootDirectory }}
         dataproduct: ${{ parameters.dataproduct }}
     - id: register
